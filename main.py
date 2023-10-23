@@ -1,4 +1,4 @@
-from models import Game
+from scripts import Game
 
 if __name__ == "__main__":
     game = Game.Game()
