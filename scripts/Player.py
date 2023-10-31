@@ -1,11 +1,11 @@
 import pygame
-from scripts import Constants
+import Constants
 
 class Player:
     def __init__(self, game, x, y, image_path):
         self.game = game
         self.image = pygame.image.load(image_path)
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.transform.scale(self.image, (70, 106))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         self.speed = 3

@@ -1,6 +1,6 @@
 import pygame
 import sys
-from scripts import Level, Constants
+import Level, Constants
 
 class Market(Level.Level):
     def __init__(self, game):

@@ -1,12 +1,14 @@
 import pygame
 import sys
-from scripts import Game, Level, Constants
+import Game, Constants, Item
 
 class Level:
     def __init__(self, game):
         self.game = game
         self.player = game.player
-    
+        self.createItem = True
+        self.Item = None
+        
     def run(self):
         pass
 
@@ -28,6 +30,16 @@ class Level:
         keys = pygame.key.get_pressed()
         self.player.move(keys)
         self.player.blit(self.game.screen)
+
+        # Movimento da sprite dos itens
+        if self.createItem:
+            self.item = Item.Item('img//item.png')
+            self.createItem = False
+
+        self.item.move()
+        self.item.blit(self.game.screen)
+        if int(self.game.score.score) == 10:
+            self.createItem = True
 
         #pontuacao
         self.game.score.regularScore()

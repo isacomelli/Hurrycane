@@ -1,6 +1,6 @@
 import pygame
 import sys
-from scripts import Level, Constants
+import Level, Constants
 
 class StreetOne(Level.Level):
     def __init__(self, game):
