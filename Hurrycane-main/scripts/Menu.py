@@ -1,29 +1,21 @@
 import pygame
 import Constants
 from pygame.locals import *
-import os
+
 
 class Menu:
     def __init__(self, sceneManager):
-        # pygame.init()
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.font = 'Retro.ttf'
-        # self.clock = pygame.time.Clock()
         self.sceneManager = sceneManager
         self.run()
-    
-    # Center the Game Application
-    os.environ['SDL_VIDEO_CENTERED'] = '1'
-    
+
     # Text Renderer
     def text_format(self, message, textFont, textSize, textColor):
         newFont = pygame.font.Font(textFont, textSize)
         newText = newFont.render(message, 0, textColor)
         return newText
     
-    # Game Framerate
-    # clock = pygame.time.Clock()
-
     def run(self):
         menu = True
         selected = 0
@@ -34,12 +26,6 @@ class Menu:
                     pygame.quit()
                     quit()
                 if event.type == pygame.KEYDOWN:
-                    print(event.key == pygame.K_SPACE)
-                    print(selected)
-                    # não apagar
-                    # if event.key == pygame.K_SPACE and selected == 0: # para sair do menu
-                    #     print('botão start do menu pressionado')
-                    #     menu = False
                     if event.key == pygame.K_UP:
                         if selected == 0:
                             selected = 0
@@ -50,19 +36,22 @@ class Menu:
                             selected = 4
                         else:
                             selected += 1
-                    # if event.key==pygame.K_RETURN:
-                    #         #TITLE, START, CHARACTER, OPTION, ABOUT,
-                    #     if selected == 0:
-                    #         print('Start')
-                    #     if selected == 1:
-                    #         print('character')
-                    #     if selected == 2:
-                    #         print('option')
-                    #     if selected == 3:
-                    #         print('about')
-                    #     if selected == 4:
-                    #         pygame.quit()
-                    #         quit()
+                    if event.key==pygame.K_RETURN:
+                        #TITLE, START, CHARACTER, OPTION, ABOUT
+                        if selected == 0:
+                            menu = False
+                            self.sceneManager.set_state('streetOne')
+                            print('Start')
+                        if selected == 1:
+                            print('character')
+                        if selected == 2:
+                            print('option')
+                        if selected == 3:
+                            print('about')
+                        if selected == 4:
+                            pygame.quit()
+                            quit()
+
     
             # Main Menu UI
             self.screen.fill(Constants.GRAY)
@@ -95,7 +84,6 @@ class Menu:
             about_rect = text_about.get_rect()
             quit_rect = text_quit.get_rect()
 
-            #TITLE, START, CHARACTER, OPTION, ABOUT,
             # Main Menu Text
             self.screen.blit(title, (Constants.SCREEN_WIDTH / 2 - (title_rect[2] / 2), 80))
             self.screen.blit(text_start, (Constants.SCREEN_WIDTH / 2 - (start_rect[2] / 2), 300))
@@ -105,8 +93,5 @@ class Menu:
             self.screen.blit(text_quit, (Constants.SCREEN_WIDTH / 2 - (quit_rect[2] / 2), 540))
 
             pygame.display.update()
-            # self.clock.tick(Constants.FPS)
             pygame.display.set_caption(Constants.GAME_NAME)
-            # Menu()
             
-# Menu().run()

@@ -1,10 +1,11 @@
 import pygame
 import sys
-import Game, Constants, Item
+import Constants, Item
 
 class Level:
-    def __init__(self, game):
+    def __init__(self, game, sceneManager):
         self.game = game
+        self.sceneManager = sceneManager
         self.player = game.player
         self.createItem = True
         self.item = None
@@ -41,7 +42,7 @@ class Level:
         self.item.blit(self.game.screen)
 
         self.time += self.game.clock.tick(Constants.FPS)
-        print(self.time) 
+        # print(self.time) 
 
         if self.player.rect.colliderect(self.item.rect):
             # colocar música

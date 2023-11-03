@@ -1,6 +1,6 @@
 import pygame
-import Constants, Score, SceneManager, Player, StreetOne, Market, StreetTwo, Item, Menu
-
+import Constants, Score, SceneManager, Player, StreetOne, Market, StreetTwo, Menu
+import sys # SceneManager 02/11
 
 class Game:
     def __init__(self):
@@ -10,37 +10,32 @@ class Game:
         self.score = Score.Score()
         self.player = Player.Player(self, Constants.SCREEN_WIDTH // 2, Constants.SCREEN_HEIGHT - 100, 'img\\ariel.png') # vai ser definido dps do menu
 
-        # Outro
-        # self.sceneManager = SceneManager.SceneManager('StreetOne')
-        # self.sceneManager = SceneManager.SceneManager('Market')
-        # self.StreetOne = StreetOne.StreetOne(self)
-        # self.Market = Market.Market(self)
-        # self.StreetTwo = StreetTwo.StreetTwo(self)
+        self.sceneManager = SceneManager.SceneManager('menu')
+        self.menu = Menu.Menu(self.sceneManager)
+        self.streetOne = StreetOne.StreetOne(self, self.sceneManager)
+        self.market = Market.Market(self, self.sceneManager)
+        self.streetTwo = StreetTwo.StreetTwo(self, self.sceneManager)
 
-        # # CAUE
-        # self.sceneManager = SceneManager.SceneManager('menu')
-        # self.menu = Menu.Menu(self.sceneManager)
-        # self.states2 = {'menu': self.menu}
-    
-        # ISA
         self.states = {
-            # 'Menu': Menu.Menu(self), 
-            'StreetOne': StreetOne.StreetOne(self),
-            'Market': Market.Market(self), 
-            'StreetTwo': StreetTwo.StreetTwo(self)
-        #   'defeat': self.defeat, 
-        #   'winner': self.winner
-        }
-
+                        'menu': self.menu,
+                        'streetOne': self.streetOne,
+                        'market': self.market, 
+                        'streetTwo': self.streetTwo,
+                        # 'defeat': self.defeat, 
+                        # 'winner': self.winner
+                       }
+    
     def run(self):
-        # # CAUE
-        # while True:
-        # https://www.youtube.com/watch?v=r0ixaTQxsUI
-            # self.states2[self.sceneManager.get_state()].run()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
-        # ISA
-        for state_name, state in self.states.items():
-           state.run()
-        # StreetOne.StreetOne(self).run()
-        # Market.Market(self).run()
-        # StreetTwo.StreetTwo(self).run()
+            print(self.sceneManager.get_state())
+            self.states[self.sceneManager.get_state()].run()
+            # pygame.display.update()
+            # self.clock.tick(Constants.FPS)
+    
+
+        # https://www.youtube.com/watch?v=r0ixaTQxsUI
