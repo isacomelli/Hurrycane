@@ -6,10 +6,15 @@ class Level:
     def __init__(self, game, sceneManager):
         self.game = game
         self.sceneManager = sceneManager
+        pygame.display.set_caption(Constants.GAME_NAME)
         self.player = game.player
+        self.time = 0
+        self.item_teste = 0
+        self.background_y = 0
         self.createItem = True
         self.item = None
-        self.time = 0
+        self.item_json = None
+        self.level_speed = None
 
     def run(self):
         pass
@@ -21,7 +26,7 @@ class Level:
                 sys.exit()
 
         # Atualizando a imagem do fundo
-        self.background_y += self.background_scroll_speed
+        self.background_y += self.level_speed
         self.game.screen.blit(self.background, (0, self.background_y))
         self.game.screen.blit(self.background, (0, self.background_y - Constants.SCREEN_HEIGHT))
 
@@ -35,26 +40,30 @@ class Level:
 
         # Movimento da sprite dos itens
         if self.createItem:
-            self.item = Item.Item('img//teste_item.png')
+            if self.item_teste % 2 == 0:
+                self.item = Item.Item(self.item_json[1])
+            else:
+                self.item = Item.Item(self.item_json[2])
             self.createItem = False
+            self.item_teste += 1
 
         self.item.move()
         self.item.blit(self.game.screen)
 
-        self.time += self.game.clock.tick(Constants.FPS)
-        # print(self.time) 
-
         if self.player.rect.colliderect(self.item.rect):
             # colocar música
-            self.game.score.addScore()
+            self.game.score.update_score(self.item.score)
+            self.createItem = True
+
+        if self.item.rect.y >= Constants.SCREEN_HEIGHT:
             self.createItem = True
 
         #pontuacao
-        self.game.score.regularScore()
-        font = pygame.font.SysFont('sans', 40)
-        score_text = f'SCORE: {int(self.game.score.score)}'
-        scoreShow = font.render(score_text, True, (255, 0, 251))
-        self.game.screen.blit(scoreShow, (10, 10))
+        self.game.score.regular_score()
+        score_render = self.game.score.get_score_render()
+        self.game.screen.blit(score_render, (10, 10))
 
-        pygame.display.flip()
+        pygame.display.update()
+        self.time += self.game.clock.tick(Constants.FPS)
+        print(self.time) 
         # self.game.clock.tick(Constants.FPS)

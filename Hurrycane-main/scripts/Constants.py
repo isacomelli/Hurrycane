@@ -1,5 +1,5 @@
 #Names
-GAME_NAME = "Hurrycane"
+GAME_NAME = "HurryCane"
 
 # Configs
 SCREEN_WIDTH = 500

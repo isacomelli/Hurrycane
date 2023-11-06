@@ -8,7 +8,7 @@ class Game:
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.score = Score.Score()
-        self.player = Player.Player(self, Constants.SCREEN_WIDTH // 2, Constants.SCREEN_HEIGHT - 100, 'img\\ariel.png') # vai ser definido dps do menu
+        self.player = Player.Player(self, Constants.SCREEN_WIDTH // 2, Constants.SCREEN_HEIGHT - 100, 'ariel') # vai ser definido dps do menu
 
         self.sceneManager = SceneManager.SceneManager('menu')
         self.menu = Menu.Menu(self.sceneManager)
