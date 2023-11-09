@@ -1,17 +1,22 @@
 import pygame
 import Constants
 from pygame.locals import *
-
+from pygame import mixer
+import os
 
 class Menu:
     def __init__(self, sceneManager):
         self.sceneManager = sceneManager
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
-        self.font = '..\\Retro.ttf'
-        self.run()
+        self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
+        self.menuMusic = pygame.mixer.Sound(Constants.MENU_MUSIC)
+        self.menuSound = pygame.mixer.Sound(Constants.MENU_RETURN_SOUND)
+        self.menuWalk = pygame.mixer.Sound(Constants.MENU_WALK_SOUND)
+        self.menuMusic.set_volume(0.30)
+        # self.run()
 
     # Text Renderer
-    def text_format(self, message, text_color, text_size=75):
+    def text_format(self, message, text_color, text_size=50):
         new_font = pygame.font.Font(self.font, text_size)
         text = new_font.render(message, 0, text_color)
         return text
@@ -19,33 +24,35 @@ class Menu:
     def run(self):
         menu = True
         selected = 0
-    
+        self.menuMusic.play()
         while menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:    
                     if event.key == pygame.K_UP:
+                        self.menuWalk.play() 
                         if selected == 0:
-                            selected = 0
+                            selected = 0   
                         else:
                             selected -= 1
                     elif event.key == pygame.K_DOWN:
+                        self.menuWalk.play() 
                         if selected == 2:
                             selected = 2 
                         else:
-                            selected += 1
+                            selected += 1 
                     if event.key==pygame.K_RETURN:
                         # START, RANKING e QUIT
+                        self.menuSound.play() 
                         if selected == 0:
-                            self.sceneManager.set_state('streetOne')
+                            self.sceneManager.set_state('characterMenu')
                             menu = False
-                            print('START')
                         if selected == 1:
-                            print('RANKING')
+                            self.sceneManager.set_state('rankingMenu')
+                            menu = False
                         if selected == 2:
-                            print('QUIT')
                             pygame.quit()
                             quit()
 
@@ -59,7 +66,7 @@ class Menu:
             elif selected == 2:
                 text_colors = [Constants.BLACK, Constants.BLACK, Constants.WHITE]
 
-            title = self.text_format(Constants.GAME_NAME, Constants.YELLOW, text_size=90)
+            title = self.text_format(Constants.GAME_NAME, Constants.YELLOW, text_size=70)
             text_start = self.text_format('START', text_colors[0])
             text_ranking = self.text_format('RANKING', text_colors[1])
             text_quit = self.text_format('QUIT', text_colors[2])
@@ -77,4 +84,5 @@ class Menu:
 
             pygame.display.update()
             pygame.display.set_caption(Constants.GAME_NAME)
+        self.menuMusic.fadeout(5000)
             

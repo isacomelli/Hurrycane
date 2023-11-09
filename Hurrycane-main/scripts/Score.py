@@ -1,5 +1,6 @@
 import pygame
 import Constants
+import os
 
 class Score:
     score = 0
@@ -10,7 +11,7 @@ class Score:
         self.score += item_score
 
     def get_score_render(self):
-        font = pygame.font.SysFont('..\\Retro.ttf', 40)
+        font = pygame.font.SysFont(f"{os.path.abspath('.')}\\Retro.ttf", 40)
         score_text = f'SCORE: {int(self.score)}'
         score_render = font.render(score_text, True, Constants.GREEN) # (255, 0, 251) rosa
         # self.game.screen.blit(score_render, (10, 10))

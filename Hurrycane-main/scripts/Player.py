@@ -11,9 +11,12 @@ class Player:
         self.image = pygame.transform.scale(self.image, (70, 106))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.speed = 8  # cada personagem vai ter uma velocidade e altura do pulo; dá pra fazer um a if nome x else b em cada
-        self.jump_height = 12
+        self.speed = (5 if player_name == 'ariel' else 8)
+        self.jump_height = (15 if player_name == 'ariel' else 10) 
+        self.jumpSound = pygame.mixer.Sound(Constants.JUMP_SOUND)
+        # ou um dicionario com chave player_name e valor speed/jump_height
         self.is_jumping = False
+        self.jumpSound.set_volume(0.10)
 
     def move(self, keys):
         if keys[pygame.K_LEFT]:
@@ -28,6 +31,7 @@ class Player:
 
         if not self.is_jumping:
             if keys[pygame.K_SPACE]:
+                self.jumpSound.play()
                 self.is_jumping = True
                 self.jump_pixels = self.jump_height
 
