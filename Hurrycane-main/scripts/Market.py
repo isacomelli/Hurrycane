@@ -36,7 +36,7 @@ class Market(Level.Level):
             # print(self.time)
             self.default_setups()
 
-            if self.time > 4999:
+            if self.time > 3000:
                 self.sceneManager.set_state('streetTwo')
                 break
         self.marketMusic.stop()

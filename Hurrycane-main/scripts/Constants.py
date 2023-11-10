@@ -25,7 +25,9 @@ MENU_MUSIC = 'audio/music_menu.wav'
 STREETONE_MUSIC = 'audio/music_streetOne.wav'
 MARKET_MUSIC = 'audio/music_market.mp3'
 STREETTWO_MUSIC = 'audio/music_streetTwo.mp3'
+WINNER_MUSIC = 'audio/winner_sound.wav'
 
+# SOUNDS
 JUMP_SOUND = 'audio/jump.wav'
 MENU_RETURN_SOUND = 'audio/menu_select.mp3'
 MENU_WALK_SOUND = 'audio/menu_walk.wav'

@@ -33,7 +33,7 @@ class StreetTwo(Level.Level):
         while True:
             self.default_setups()
 
-            if self.time > 14999:
-                self.sceneManager.set_state('menu')
+            if self.time > 5000:
+                self.sceneManager.set_state('winnerScreen')
                 break
         self.streetTwoMusic.stop()

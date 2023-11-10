@@ -34,7 +34,7 @@ class StreetOne(Level.Level):
         while True:
             self.default_setups()
 
-            if self.time > 4999: # 10 segundos
+            if self.time > 3000: # 10 segundos
                 self.sceneManager.set_state('market')
                 break
         self.streetOneMusic.stop()

@@ -1,5 +1,5 @@
 import pygame
-import Constants, Score, SceneManager, Player, StreetOne, Market, StreetTwo, Menu, RankingMenu, CharacterMenu
+import Constants, Score, SceneManager, Player, StreetOne, Market, StreetTwo, Menu, RankingMenu, CharacterMenu, WinnerScreen
 import sys # SceneManager 02/11
 
 class Game:
@@ -14,13 +14,12 @@ class Game:
 
         self.states = {
                         'menu': Menu.Menu(self.sceneManager),
-                        'rankingMenu': RankingMenu.RankingMenu(self.sceneManager),
+                        'rankingMenu': RankingMenu.RankingMenu(self.sceneManager, self.score),
                         'characterMenu': CharacterMenu.CharacterMenu(self.sceneManager), 
                         'streetOne': None,
                         'market': None, 
                         'streetTwo': None,
-                        # 'defeat': self.defeat, 
-                        # 'winner': self.winner
+                        'winnerScreen': None
                        }
 
     def run(self):
@@ -37,5 +36,11 @@ class Game:
                 self.states['streetOne'] = StreetOne.StreetOne(self, self.sceneManager)
                 self.states['market'] = Market.Market(self, self.sceneManager)
                 self.states['streetTwo'] = StreetTwo.StreetTwo(self, self.sceneManager)
+                self.states['winnerScreen'] = WinnerScreen.WinnerScreen(self.sceneManager, self.score, self, self.states['rankingMenu'])
+                                                                      
+
+
+
+
 
         # https://www.youtube.com/watch?v=r0ixaTQxsUI

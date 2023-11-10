@@ -11,7 +11,7 @@ class CharacterMenu:
         self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
         self.character = None
         self.character1 = pygame.image.load(f"{os.path.abspath('.')}\\img\\ariel_running_1.png")
-        self.character2 = pygame.image.load(f"{os.path.abspath('.')}\\img\\player2_running_1.png")
+        self.character2 = pygame.image.load(f"{os.path.abspath('.')}\\img\\eric_running_1.png")
         self.selected = 0
         self.menuWalk = pygame.mixer.Sound(Constants.MENU_WALK_SOUND)
         self.menuSound = pygame.mixer.Sound(Constants.MENU_RETURN_SOUND)
@@ -45,7 +45,7 @@ class CharacterMenu:
         #textos
         select_text = self.text_format("Selecione seu personagem", (255, 255, 0), text_size=25)
         character1_name = self.text_format("Ariel",(255, 255, 255), text_size=23)
-        character2_name = self.text_format("Pedro",(255, 255, 255), text_size=23)
+        character2_name = self.text_format("Eric",(255, 255, 255), text_size=23)
 
         #disposicao textos
         text_rect = select_text.get_rect(center=(self.screen.get_width() // 2, 100))
@@ -81,7 +81,7 @@ class CharacterMenu:
                             self.sceneManager.set_state('streetOne')
                             characterMenu = False
                         if self.selected == 1:
-                            self.set_character('player2')
+                            self.set_character('eric')
                             self.sceneManager.set_state('streetOne')
                             characterMenu = False
 

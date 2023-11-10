@@ -1,8 +1,5 @@
-pedro;500
 caue;670
 isa;13553
 pedro;444
-caue;24
 isa;1989
-pedro;670
 caue;2511

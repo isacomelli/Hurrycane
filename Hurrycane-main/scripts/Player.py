@@ -18,7 +18,7 @@ class Player:
         self.is_jumping = False
         self.jumpSound.set_volume(0.10)
 
-    def move(self, keys):
+    def move(self, keys): 
         if keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT]:
