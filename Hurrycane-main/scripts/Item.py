@@ -1,8 +1,5 @@
-import pygame
-import sys
-import random
-import Game, Level, Constants
-import os
+import pygame, sys, os, random
+import Constants 
 
 class Item:
     def __init__(self, item_json):
@@ -11,7 +8,6 @@ class Item:
         self.speed = item_json['speed']
         self.score = item_json['score']
         self_size = item_json['size']
-        # self.sound = (som_bom if self.type == 'good' else som_ruim)
 
         self.image = pygame.image.load(f"{os.path.abspath('.')}\\img\\{item_json['name']}.png")
         self.image = pygame.transform.scale(self.image, self_size)

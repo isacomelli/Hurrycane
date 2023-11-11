@@ -1,6 +1,5 @@
-import pygame
+import pygame, os
 import Level, Constants
-import os
 
 class StreetTwo(Level.Level):
     def __init__(self, game, sceneManager):
@@ -23,8 +22,50 @@ class StreetTwo(Level.Level):
                 'type': 'bad',
                 'speed': self.level_speed,
                 'score': -5000,
-                'size': (25, 25)
+                'size': (50, 50)
             }
+            # 1: {
+            #     'name': 'radio',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 5000,
+            #     'size': (25, 25)
+            # },
+            # 2: {
+            #     'name': 'lantern',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 5000,
+            #     'size': (25, 25)
+            # },
+            # 3: {
+            #     'name': 'forest_hole',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -5000,
+            #     'size': (50, 50)
+            # },
+            # 4: {
+            #     'name': 'purple_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -5000,
+            #     'size': (50, 50)
+            # },
+            # 5: {
+            #     'name': 'red_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -5000,
+            #     'size': (50, 50)
+            # },
+            # 6: {
+            #     'name': 'cigarette',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -5000,
+            #     'size': (50, 50)
+            # }
         }
 
     def run(self):
@@ -33,7 +74,8 @@ class StreetTwo(Level.Level):
         while True:
             self.default_setups()
 
-            if self.time > 5000:
+            # if self.time >= 70000:
+            if self.time >= 15000:
                 self.sceneManager.set_state('winnerScreen')
+                self.streetTwoMusic.stop()
                 break
-        self.streetTwoMusic.stop()

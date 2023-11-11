@@ -1,7 +1,5 @@
-import pygame
-import sys
+import pygame, os
 import Level, Constants
-import os
 
 class Market(Level.Level):
     def __init__(self, game, sceneManager):
@@ -25,8 +23,50 @@ class Market(Level.Level):
                 'type': 'bad',
                 'speed': self.level_speed,
                 'score': -1000,
-                'size': (25, 25)
+                'size': (50, 50)
             }
+            # 1: {
+            #     'name': 'water',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 1000,
+            #     'size': (25, 25)
+            # },
+            # 2: {
+            #     'name': 'food',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 1000,
+            #     'size': (25, 25)
+            # },
+            # 3: {
+            #     'name': 'med_kit',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 1000,
+            #     'size': (25, 25)
+            # },
+            # 4: {
+            #     'name': 'alcool',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -1000,
+            #     'size': (50, 50)
+            # },
+            # 5: {
+            #     'name': 'cigarette',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -1000,
+            #     'size': (50, 50)
+            # },
+            # 6: {
+            #     'name': 'videogame',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -1000,
+            #     'size': (50, 50)
+            # }
         }
 
     def run(self):
@@ -36,7 +76,8 @@ class Market(Level.Level):
             # print(self.time)
             self.default_setups()
 
-            if self.time > 3000:
+            # if self.time >= 40000:
+            if self.time >= 10000:
                 self.sceneManager.set_state('streetTwo')
+                self.marketMusic.stop()
                 break
-        self.marketMusic.stop()

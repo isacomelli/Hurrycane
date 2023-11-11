@@ -1,20 +1,22 @@
-import pygame
-import Constants, Score, SceneManager, Player, StreetOne, Market, StreetTwo, Menu, RankingMenu, CharacterMenu, WinnerScreen
-import sys # SceneManager 02/11
+import pygame, sys
+import Constants, Score, Hurrycane, SceneManager, Player, Ranking, Menu, RankingMenu, CharacterMenu, StreetOne, Market, StreetTwo, WinnerScreen
+ # SceneManager 02/11
 
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
-        self.clock = pygame.time.Clock()
         self.score = Score.Score()
+        # self.hurrycane = Hurrycane.Hurrycane()
+        self.hurrycane = None
+        self.clock = None
         self.player = None
 
         self.sceneManager = SceneManager.SceneManager('menu')
 
         self.states = {
                         'menu': Menu.Menu(self.sceneManager),
-                        'rankingMenu': RankingMenu.RankingMenu(self.sceneManager, self.score),
+                        'rankingMenu': RankingMenu.RankingMenu(self.sceneManager),
                         'characterMenu': CharacterMenu.CharacterMenu(self.sceneManager), 
                         'streetOne': None,
                         'market': None, 
@@ -31,16 +33,17 @@ class Game:
 
             self.states[self.sceneManager.get_state()].run()
 
-            if self.sceneManager.get_state() == 'streetOne':
-                self.player = Player.Player(self, Constants.SCREEN_WIDTH // 2, Constants.SCREEN_HEIGHT - 100, self.states['characterMenu'].get_character())
+            if self.sceneManager.get_previous_state() == 'characterMenu':
+                self.player = Player.Player(self, self.states['characterMenu'].get_character())
                 self.states['streetOne'] = StreetOne.StreetOne(self, self.sceneManager)
                 self.states['market'] = Market.Market(self, self.sceneManager)
                 self.states['streetTwo'] = StreetTwo.StreetTwo(self, self.sceneManager)
-                self.states['winnerScreen'] = WinnerScreen.WinnerScreen(self.sceneManager, self.score, self, self.states['rankingMenu'])
-                                                                      
+                self.hurrycane = Hurrycane.Hurrycane()
 
+            elif self.sceneManager.get_previous_state() == 'streetTwo':
+                self.states['winnerScreen'] = WinnerScreen.WinnerScreen(self.sceneManager, self.score.get_score())
 
-
-
-
+            if self.sceneManager.get_state() == 'menu':
+                self.score = Score.Score()
+                
         # https://www.youtube.com/watch?v=r0ixaTQxsUI

@@ -1,6 +1,5 @@
-import pygame
-import Level, Constants,Menu
-import os
+import pygame, os
+import Level, Constants
 
 class StreetOne(Level.Level):
     def __init__(self, game, sceneManager):
@@ -26,6 +25,62 @@ class StreetOne(Level.Level):
                 'score': -500,
                 'size': (50, 50)
             }
+            # 1: {
+            #     'name': 'radio',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 500,
+            #     'size': (25, 25)
+            # },
+            # 2: {
+            #     'name': 'water',
+            #     'type': 'good',
+            #     'speed': self.level_speed,
+            #     'score': 500,
+            #     'size': (25, 25)
+            # },
+            # 3: {
+            #     'name': 'city_hole',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -500,
+            #     'size': (50, 50)
+            # },
+            # 4: {
+            #     'name': 'black_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -500,
+            #     'size': (50, 50)
+            # },
+            # 5: {
+            #     'name': 'purple_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -500,
+            #     'size': (50, 50)
+            # },
+            # 6: {
+            #     'name': 'red_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -500,
+            #     'size': (50, 50)
+            # }
+            # 7: {
+            #     'name': 'gray_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -500,
+            #     'size': (50, 50)
+            # },
+            # 8: {
+            #     'name': 'green_car',
+            #     'type': 'bad',
+            #     'speed': self.level_speed,
+            #     'score': -500,
+            #     'size': (50, 50)
+            # },
         }
     
     def run(self):
@@ -34,7 +89,8 @@ class StreetOne(Level.Level):
         while True:
             self.default_setups()
 
-            if self.time > 3000: # 10 segundos
+            # print(self.time)
+            if self.time >= 5000: # 10 segundos
                 self.sceneManager.set_state('market')
+                self.streetOneMusic.stop()
                 break
-        self.streetOneMusic.stop()

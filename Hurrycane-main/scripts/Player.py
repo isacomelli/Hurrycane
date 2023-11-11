@@ -2,15 +2,15 @@ import pygame
 import Constants
 
 class Player:
-    def __init__(self, game, x, y, player_name):
+    def __init__(self, game, player_name):
         self.game = game
-        self.running_images = [pygame.image.load(f'img\\{player_name}_running_{x}.png') for x in range(1, 13)]
+        self.running_images = [pygame.image.load(f'img\\{player_name}_{x}.png') for x in range(1, 13)]
         self.running_images += self.running_images[-2::-1][:-1]
         self.current_image_number = 0
         self.image = self.running_images[self.current_image_number]
         self.image = pygame.transform.scale(self.image, (70, 106))
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
+        self.rect.center = (Constants.SCREEN_WIDTH // 2, Constants.SCREEN_HEIGHT - 150)
         self.speed = (5 if player_name == 'ariel' else 8)
         self.jump_height = (15 if player_name == 'ariel' else 10) 
         self.jumpSound = pygame.mixer.Sound(Constants.JUMP_SOUND)
