@@ -12,6 +12,7 @@ class WinnerScreen:
         self.background = pygame.transform.scale(self.background, (Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
         self.final_score = score
+        self.ranking = Ranking()
         self.click_sound = pygame.mixer.Sound(Constants.MENU_CLICK_SOUND)
         self.music = pygame.mixer.Sound(Constants.WINNER_MUSIC)
         self.username = ''
@@ -35,7 +36,7 @@ class WinnerScreen:
         self.screen.blit(text, (x, y))
 
     def verify_record(self):
-        if self.final_score > Ranking().get_highest_score():
+        if self.final_score > self.ranking.get_fifth_highest_score():
             return True
         return False
 
@@ -43,6 +44,8 @@ class WinnerScreen:
     def run(self):
         display_screen = True
         self.music.play()
+
+
 
         if self.verify_record():
             title = 'NEW RECORD!'

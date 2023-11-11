@@ -10,62 +10,62 @@ class StreetTwo(Level.Level):
         self.streetTwoMusic = pygame.mixer.Sound(Constants.STREETTWO_MUSIC)
 
         self.item_json = {
+            #1: {
+            #    'name': 'teste_item_streetTwo_1',
+            #    'type': 'good',
+            #    'speed': self.level_speed,
+            #    'score': 5000,
+            #    'size': (25, 25)
+            #},
+            #2: {
+            #    'name': 'teste_item_streetTwo_2',
+            #    'type': 'bad',
+            #    'speed': self.level_speed,
+            #    'score': -5000,
+            #    'size': (50, 50)
+            #}
             1: {
-                'name': 'teste_item_streetTwo_1',
+                'name': 'radio',
                 'type': 'good',
                 'speed': self.level_speed,
                 'score': 5000,
-                'size': (25, 25)
+                'size': (40, 44)
             },
             2: {
-                'name': 'teste_item_streetTwo_2',
+                'name': 'lantern',
+                'type': 'good',
+                'speed': self.level_speed,
+                'score': 5000,
+                'size': (70, 32) #2.5
+            },
+            3: {
+                'name': 'forest_hole',
                 'type': 'bad',
                 'speed': self.level_speed,
                 'score': -5000,
-                'size': (50, 50)
+                'size': (75, 75)
+            },
+            4: {
+                'name': 'purple_car',
+                'type': 'bad',
+                'speed': self.level_speed,
+                'score': -5000,
+                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
+            },
+            5: {
+                'name': 'red_car',
+                'type': 'bad',
+                'speed': self.level_speed,
+                'score': -5000,
+                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
+            },
+            6: {
+                'name': 'cigarette',
+                'type': 'bad',
+                'speed': self.level_speed,
+                'score': -5000,
+                'size': (30, 50)
             }
-            # 1: {
-            #     'name': 'radio',
-            #     'type': 'good',
-            #     'speed': self.level_speed,
-            #     'score': 5000,
-            #     'size': (25, 25)
-            # },
-            # 2: {
-            #     'name': 'lantern',
-            #     'type': 'good',
-            #     'speed': self.level_speed,
-            #     'score': 5000,
-            #     'size': (25, 25)
-            # },
-            # 3: {
-            #     'name': 'forest_hole',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -5000,
-            #     'size': (50, 50)
-            # },
-            # 4: {
-            #     'name': 'purple_car',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -5000,
-            #     'size': (50, 50)
-            # },
-            # 5: {
-            #     'name': 'red_car',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -5000,
-            #     'size': (50, 50)
-            # },
-            # 6: {
-            #     'name': 'cigarette',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -5000,
-            #     'size': (50, 50)
-            # }
         }
 
     def run(self):
@@ -75,7 +75,7 @@ class StreetTwo(Level.Level):
             self.default_setups()
 
             # if self.time >= 70000:
-            if self.time >= 15000:
+            if self.time >= 150000:
                 self.sceneManager.set_state('winnerScreen')
                 self.streetTwoMusic.stop()
                 break

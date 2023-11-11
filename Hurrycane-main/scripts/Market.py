@@ -11,62 +11,62 @@ class Market(Level.Level):
         self.marketMusic.set_volume(0.3)
 
         self.item_json = {
+            #1: {
+            #    'name': 'teste_item_market_1',
+            #    'type': 'good',
+            #    'speed': self.level_speed,
+            #    'score': 1000,
+            #    'size': (25, 25)
+            #},
+            #2: {
+            #    'name': 'teste_item_market_2',
+            #    'type': 'bad',
+            #    'speed': self.level_speed,
+            #    'score': -1000,
+            #    'size': (50, 50)
+            #}
             1: {
-                'name': 'teste_item_market_1',
+                'name': 'water',
                 'type': 'good',
                 'speed': self.level_speed,
                 'score': 1000,
-                'size': (25, 25)
+                'size': (30, 90)
             },
             2: {
-                'name': 'teste_item_market_2',
+                'name': 'food',
+                'type': 'good',
+                'speed': self.level_speed,
+                'score': 1000,
+                'size': (40, 72) # proporcao = 1.80
+            },
+            3: {
+                'name': 'med_kit',
+                'type': 'good',
+                'speed': self.level_speed,
+                'score': 1000,
+                'size': (80, 86) # 1.07
+            },
+            4: {
+                'name': 'alcool',
                 'type': 'bad',
                 'speed': self.level_speed,
                 'score': -1000,
-                'size': (50, 50)
+                'size': (20, 80) #3
+            },
+            5: {
+                'name': 'cigarette',
+                'type': 'bad',
+                'speed': self.level_speed,
+                'score': -1000,
+                'size': (30, 50) #1.64
+            },
+            6: {
+                'name': 'videogame',
+                'type': 'bad',
+                'speed': self.level_speed,
+                'score': -1000,
+                'size': (30, 48) #1.54
             }
-            # 1: {
-            #     'name': 'water',
-            #     'type': 'good',
-            #     'speed': self.level_speed,
-            #     'score': 1000,
-            #     'size': (25, 25)
-            # },
-            # 2: {
-            #     'name': 'food',
-            #     'type': 'good',
-            #     'speed': self.level_speed,
-            #     'score': 1000,
-            #     'size': (25, 25)
-            # },
-            # 3: {
-            #     'name': 'med_kit',
-            #     'type': 'good',
-            #     'speed': self.level_speed,
-            #     'score': 1000,
-            #     'size': (25, 25)
-            # },
-            # 4: {
-            #     'name': 'alcool',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -1000,
-            #     'size': (50, 50)
-            # },
-            # 5: {
-            #     'name': 'cigarette',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -1000,
-            #     'size': (50, 50)
-            # },
-            # 6: {
-            #     'name': 'videogame',
-            #     'type': 'bad',
-            #     'speed': self.level_speed,
-            #     'score': -1000,
-            #     'size': (50, 50)
-            # }
         }
 
     def run(self):
@@ -77,7 +77,7 @@ class Market(Level.Level):
             self.default_setups()
 
             # if self.time >= 40000:
-            if self.time >= 10000:
+            if self.time >= 5000:
                 self.sceneManager.set_state('streetTwo')
                 self.marketMusic.stop()
                 break

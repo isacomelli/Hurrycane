@@ -94,5 +94,5 @@ class Menu:
 
             pygame.display.update()
             pygame.display.set_caption(Constants.GAME_NAME)
-        self.music.fadeout(5000)
+        self.music.fadeout(1000)
             
