@@ -4,11 +4,11 @@ import Constants
 from Ranking import Ranking
 
 class WinnerScreen:
-    def __init__(self, sceneManager, score):
+    def __init__(self, sceneManager, player_name, score):
         pygame.font.init() 
         self.sceneManager = sceneManager
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
-        self.background = pygame.image.load(f"{os.path.abspath('.')}\\img\\winner_background.png")
+        self.background = pygame.image.load(f"{os.path.abspath('.')}\\img\\{player_name}_winner_background.png")
         self.background = pygame.transform.scale(self.background, (Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
         self.final_score = score
@@ -40,12 +40,9 @@ class WinnerScreen:
             return True
         return False
 
-
     def run(self):
         display_screen = True
         self.music.play()
-
-
 
         if self.verify_record():
             title = 'NEW RECORD!'
@@ -64,8 +61,13 @@ class WinnerScreen:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.click_sound.play()
-                        self.sceneManager.set_state(next_state)
-                        display_screen = False
+                        if self.verify_record():
+                            if len(self.username):
+                                self.sceneManager.set_state(next_state)
+                                display_screen = False
+                        else:
+                            self.sceneManager.set_state(next_state)
+                            display_screen = False
                     
                     if self.verify_record():
                         if event.key == pygame.K_BACKSPACE:

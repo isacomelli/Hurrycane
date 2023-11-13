@@ -8,6 +8,8 @@ class Menu:
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.background = pygame.image.load(f"{os.path.abspath('.')}\\img\\menu_background.png")
         self.background = pygame.transform.scale(self.background, (Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+        self.logo = pygame.image.load(f"{os.path.abspath('.')}\\img\\logo.png")
+        self.logo = pygame.transform.scale(self.logo, (346 * 1.2, 56 * 1.2))
         self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
         self.music = pygame.mixer.Sound(Constants.MENU_MUSIC)
         self.click_sound = pygame.mixer.Sound(Constants.MENU_CLICK_SOUND)
@@ -69,6 +71,7 @@ class Menu:
             # Main Menu UI
             # self.screen.fill(Constants.GRAY)
             self.screen.blit(self.background, (0, 0))
+            self.blit_text(self.logo, y=80)
 
             if selected == 0:
                 text_colors = [Constants.WHITE, Constants.BLACK, Constants.BLACK]
@@ -77,14 +80,14 @@ class Menu:
             elif selected == 2:
                 text_colors = [Constants.BLACK, Constants.BLACK, Constants.WHITE]
 
-            title_text, shadow_title_text = self.text_format(Constants.GAME_NAME, Constants.YELLOW, text_size=70)
+            # title_text, shadow_title_text = self.text_format(Constants.GAME_NAME, Constants.YELLOW, text_size=70)
             start_text, shadow_start_text = self.text_format('START', text_colors[0])
             ranking_text, shadow_ranking_text = self.text_format('RANKING', text_colors[1])
             quit_text, shadow_quit_text = self.text_format('QUIT', text_colors[2])
 
             # Main Menu Text
-            self.blit_text(shadow_title_text, y=80, is_shadow=True)
-            self.blit_text(title_text, y=80)
+            # self.blit_text(shadow_title_text, y=80, is_shadow=True)
+            # self.blit_text(title_text, y=80)
             self.blit_text(shadow_start_text, y=300, is_shadow=True)
             self.blit_text(start_text, y=300)
             self.blit_text(shadow_ranking_text, y=360, is_shadow=True)

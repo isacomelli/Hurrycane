@@ -10,78 +10,8 @@ class StreetOne(Level.Level):
         self.streetOneMusic = pygame.mixer.Sound(Constants.STREETONE_MUSIC)
         self.streetOneMusic.set_volume(0.30)
 
-        self.item_json = {
-            #1: {
-            #    'name': 'teste_item_streetOne_1',
-            #    'type': 'good',
-            #    'speed': self.level_speed,
-            #    'score': 500,
-            #    'size': (25, 25)
-            #},
-            #2: {
-            #    'name': 'teste_item_streetOne_2',
-            #    'type': 'bad',
-            #    'speed': self.level_speed,
-            #    'score': -500,
-            #    'size': (50, 50)
-            
-            1: {
-                'name': 'radio',
-                'type': 'good',
-                'speed': self.level_speed,
-                'score': 500,
-                'size': (40, 44) #proporcao 1.10
-            },
-            2: {
-                'name': 'water',
-                'type': 'good',
-                'speed': self.level_speed,
-                'score': 500,
-                'size': (30, 90) #proporcao = 3
-            },
-            3: {
-                'name': 'city_hole',
-                'type': 'bad',
-                'speed': self.level_speed,
-                'score': -500,
-                'size': (60, 20) #proporcao = 1.8
-            },
-            4: {
-                'name': 'black_car',
-                'type': 'bad',
-                'speed': self.level_speed,
-                'score': -500,
-                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT) #proporcao = 2.20
-            },
-            5: {
-                'name': 'purple_car',
-                'type': 'bad',
-                'speed': self.level_speed,
-                'score': -500,
-                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
-            },
-            6: {
-                'name': 'red_car',
-                'type': 'bad',
-                'speed': self.level_speed,
-                'score': -500,
-                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
-            },
-            7: {
-                'name': 'gray_car',
-                'type': 'bad',
-                'speed': self.level_speed,
-                'score': -500,
-                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
-            },
-            8: {
-                'name': 'green_car',
-                'type': 'bad',
-                'speed': self.level_speed,
-                'score': -500,
-                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
-            }
-        }
+        self.items = {item: attributes for item, attributes in game.items.items() if item in ['radio', 'water', 'food', 'city_hole', 'black_car', 'purple_car', 'green_car']}
+        self.items = {item: {**attributes, 'speed': self.level_speed} for item, attributes in self.items.items()}
     
     def run(self):
         self.streetOneMusic.play()
@@ -90,7 +20,7 @@ class StreetOne(Level.Level):
             self.default_setups()
 
             # print(self.time)
-            if self.time >= 5000: # 10 segundos
+            if self.time >= 1000:
                 self.sceneManager.set_state('market')
                 self.streetOneMusic.stop()
                 break
