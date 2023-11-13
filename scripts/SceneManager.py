@@ -1,9 +1,16 @@
 class SceneManager:
-    def __init__(self, currentState):
-        self.currentState = currentState
+    def __init__(self, current_state):
+        self.current_state = current_state
+        self.previous_state = None
+
+    def set_state(self, state):
+        self.previous_state = self.current_state
+        self.current_state = state
 
     def get_state(self):
-        return self.currentState
+        return self.current_state
+
+    def get_previous_state(self):
+        return self.previous_state
+
     
-    def set_state(self, state):
-        self.currentState = state

@@ -1,123 +1,101 @@
-import pygame
+import pygame, os
 from pygame.locals import *
-import os
+import Constants
 
-# Game Initialization
-pygame.init()
- 
-# Center the Game Application
-os.environ['SDL_VIDEO_CENTERED'] = '1'
- 
-# Game Resolution
-screen_width=500
-screen_height=660
-screen=pygame.display.set_mode((screen_width, screen_height))
- 
-# Text Renderer
-def text_format(message, textFont, textSize, textColor):
-    newFont=pygame.font.Font(textFont, textSize)
-    newText=newFont.render(message, 0, textColor)
-    return newText
- 
- 
-# Colors
-white=(255, 255, 255)
-black=(0, 0, 0)
-gray=(50, 50, 50)
-red=(255, 0, 0)
-green=(0, 255, 0)
-blue=(0, 0, 255)
-yellow=(255, 255, 0)
- 
-# Game Fonts
-font = "Retro.ttf"
+class Menu:
+    def __init__(self, sceneManager):
+        self.sceneManager = sceneManager
+        self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+        self.background = pygame.image.load(f"{os.path.abspath('.')}\\img\\menu_background.png")
+        self.background = pygame.transform.scale(self.background, (Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+        self.logo = pygame.image.load(f"{os.path.abspath('.')}\\img\\logo.png")
+        self.logo = pygame.transform.scale(self.logo, (346 * 1.2, 56 * 1.2))
+        self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
+        self.music = pygame.mixer.Sound(Constants.MENU_MUSIC)
+        self.click_sound = pygame.mixer.Sound(Constants.MENU_CLICK_SOUND)
+        self.select_sound = pygame.mixer.Sound(Constants.MENU_SELECT_SOUND)
+        self.music.set_volume(0.30)
 
- 
- 
-# Game Framerate
-clock = pygame.time.Clock()
-FPS=30
+    # Text Renderer
+    def text_format(self, message, text_color, text_size=30):
+        new_font = pygame.font.Font(self.font, text_size)
+        text = new_font.render(message, 0, text_color)
+        shadow_text = new_font.render(message, 0, Constants.BLACK)
+        return text, shadow_text
 
-
-def main_menu():
- 
-    menu=True
-    selected= 0
- 
-    while menu:
-        for event in pygame.event.get():
-            if event.type==pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_UP:
-                    if selected == 0:
-                        selected = 0
-                    else:
-                        selected -= 1
-                elif event.key==pygame.K_DOWN:
-                    if selected == 4:
-                        selected = 4
-                    else:
-                        selected += 1
-                if event.key==pygame.K_RETURN:
-                        #TITLE, START, CHARACTER, OPTION, ABOUT,
-                    if selected== 0:
-                        print("Start")
-                    if selected== 1:
-                        print("character")
-                    if selected== 2:
-                        print("option")
-                    if selected== 3:
-                        print("about")
-                    if selected== 4:
-                        pygame.quit()
-                        quit()
- 
-        # Main Menu UI
-        screen.fill(gray)
-        title=text_format("HurryCane", font, 90, yellow)
-        if selected==0:
-            text_start=text_format("START", font, 75, white)
-        else:
-            text_start = text_format("START", font, 75, black)
-        if selected==1:
-            text_character=text_format("CHARACTER", font, 75, white)
-        else:
-            text_character = text_format("CHARACTER", font, 75, black)
-        if selected==2:
-            text_options=text_format("OPTIONS", font, 75, white)
-        else:
-            text_options = text_format("OPTIONS", font, 75, black)
-        if selected==3:
-            text_about=text_format("ABOUT", font, 75, white)
-        else:
-            text_about = text_format("ABOUT", font, 75, black)
-        if selected==4:
-            text_quit=text_format("QUIT", font, 75, white)
-        else:
-            text_quit = text_format("QUIT", font, 75, black)
- 
-        title_rect=title.get_rect()
-        start_rect=text_start.get_rect()
-        character_rect=text_character.get_rect()
-        options_rect=text_options.get_rect()
-        about_rect=text_about.get_rect()
-        quit_rect=text_quit.get_rect()
-
-        #TITLE, START, CHARACTER, OPTION, ABOUT,
-        # Main Menu Text
-        screen.blit(title, (screen_width/2 - (title_rect[2]/2), 80))
-        screen.blit(text_start, (screen_width/2 - (start_rect[2]/2), 300))
-        screen.blit(text_character, (screen_width/2 - (character_rect[2]/2), 360))
-        screen.blit(text_options, (screen_width/2 - (options_rect[2]/2), 420))
-        screen.blit(text_about, (screen_width/2 - (about_rect[2]/2), 480))
-        screen.blit(text_quit, (screen_width/2 - (quit_rect[2]/2), 540))
-
-        pygame.display.update()
-        clock.tick(FPS)
-        pygame.display.set_caption("Python - Pygame Simple Main Menu Selection")
+    def blit_text(self, text, x=0, y=0, is_shadow=False):
+        rect = text.get_rect()
         
-#Initialize the Game
-main_menu()
+        if not x:
+            x = (Constants.SCREEN_WIDTH / 2 - (rect[2] / 2))
+        if is_shadow:
+            x -= 3
+            y -= 3
 
+        self.screen.blit(text, (x, y))
+    
+    def run(self):
+        display_menu = True
+        selected = 0
+        self.music.play()
+        while display_menu:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:    
+                    if event.key == pygame.K_UP:
+                        self.select_sound.play() 
+                        if selected == 0:
+                            selected = 0   
+                        else:
+                            selected -= 1
+                    elif event.key == pygame.K_DOWN:
+                        self.select_sound.play() 
+                        if selected == 2:
+                            selected = 2 
+                        else:
+                            selected += 1 
+                    if event.key==pygame.K_SPACE:
+                        self.click_sound.play() 
+                        if selected == 0:
+                            self.sceneManager.set_state('characterMenu')
+                            display_menu = False
+                        if selected == 1:
+                            self.sceneManager.set_state('rankingMenu')
+                            display_menu = False
+                        if selected == 2:
+                            pygame.quit()
+                            quit()
+
+            # Main Menu UI
+            # self.screen.fill(Constants.GRAY)
+            self.screen.blit(self.background, (0, 0))
+            self.blit_text(self.logo, y=80)
+
+            if selected == 0:
+                text_colors = [Constants.WHITE, Constants.BLACK, Constants.BLACK]
+            elif selected == 1:
+                text_colors = [Constants.BLACK, Constants.WHITE, Constants.BLACK]
+            elif selected == 2:
+                text_colors = [Constants.BLACK, Constants.BLACK, Constants.WHITE]
+
+            # title_text, shadow_title_text = self.text_format(Constants.GAME_NAME, Constants.YELLOW, text_size=70)
+            start_text, shadow_start_text = self.text_format('START', text_colors[0])
+            ranking_text, shadow_ranking_text = self.text_format('RANKING', text_colors[1])
+            quit_text, shadow_quit_text = self.text_format('QUIT', text_colors[2])
+
+            # Main Menu Text
+            # self.blit_text(shadow_title_text, y=80, is_shadow=True)
+            # self.blit_text(title_text, y=80)
+            self.blit_text(shadow_start_text, y=300, is_shadow=True)
+            self.blit_text(start_text, y=300)
+            self.blit_text(shadow_ranking_text, y=360, is_shadow=True)
+            self.blit_text(ranking_text, y=360)
+            self.blit_text(shadow_quit_text, y=420, is_shadow=True)
+            self.blit_text(quit_text, y=420)
+
+            pygame.display.update()
+            pygame.display.set_caption(Constants.GAME_NAME)
+        self.music.fadeout(1000)
+            
