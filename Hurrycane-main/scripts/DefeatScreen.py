@@ -3,21 +3,21 @@ from pygame.locals import *
 import Constants
 from Ranking import Ranking
 
-class WinnerScreen:
+class DefeatScreen:
     def __init__(self, game):
         self.game = game
         self.sceneManager = game.sceneManager
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
-        self.background = pygame.image.load(f"{os.path.abspath('.')}\\img\\{game.player.name}_winner_background.jfif")
+        self.background = pygame.image.load(f"{os.path.abspath('.')}\\img\\defeat_background.png")
+        self.background = pygame.transform.scale(self.background, (Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.background = pygame.transform.scale(self.background, (Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
         self.final_score = game.score.get_score()
         self.ranking = Ranking()
         self.click_sound = pygame.mixer.Sound(Constants.MENU_CLICK_SOUND)
-        self.music = pygame.mixer.Sound(Constants.WINNER_MUSIC)
+        self.music = pygame.mixer.Sound(Constants.DEFEAT_MUSIC)
         self.username = ''
 
-    # Text Renderer
     def text_format(self, message, text_color, text_size=30):
         new_font = pygame.font.Font(self.font, text_size)
         text = new_font.render(message, 0, text_color)
@@ -46,15 +46,13 @@ class WinnerScreen:
             self.music.play()
 
         if self.verify_record():
-            title = "You win! and.. NEW RECORD!"
+            title = 'GAME OVER! but.. NEW RECORD!'
             next_state = 'rankingMenu'
             state_string = 'NEXT'
-            title_split = 3
         else:
-            title = "You've reached the bunker!"
+            title = "GAME OVER!"
             next_state = 'menu'
             state_string = 'MENU'
-            title_split = 2
 
         while display_screen:
             for event in pygame.event.get():
@@ -81,17 +79,21 @@ class WinnerScreen:
 
             self.screen.blit(self.background, (0, 0))
 
-            title_text, shadow_title_text = self.text_format(' '.join(title.split()[:title_split]), Constants.LIGHT_BLUE)
-            title_text_2, shadow_title_text_2 = self.text_format(' '.join(title.split()[title_split:]), Constants.LIGHT_BLUE)
-            score_text, shadow_score_text = self.text_format(f'SCORE: {self.final_score}', Constants.LIGHT_BLUE)
-            input_text, shadow_input_text = self.text_format(f'NOME: {self.username}', Constants.LIGHT_BLUE)
+            if self.verify_record():
+                title_text, shadow_title_text = self.text_format(' '.join(title.split()[:3]), Constants.YELLOW)
+                title_text_2, shadow_title_text_2 = self.text_format(' '.join(title.split()[3:]), Constants.YELLOW)
+            else:
+                title_text, shadow_title_text = self.text_format(title, Constants.YELLOW)
+            score_text, shadow_score_text = self.text_format(f'SCORE: {self.final_score}', Constants.YELLOW)
+            input_text, shadow_input_text = self.text_format(f'NOME: {self.username}', Constants.YELLOW)
             state_text, shadow_state_text = self.text_format(state_string, Constants.WHITE)
 
+            if self.verify_record():
+                self.blit_text(shadow_title_text_2, y=120, is_shadow=True)
+                self.blit_text(title_text_2, y=120)
 
             self.blit_text(shadow_title_text, y=80, is_shadow=True)
             self.blit_text(title_text, y=80)
-            self.blit_text(shadow_title_text_2, y=120, is_shadow=True)
-            self.blit_text(title_text_2, y=120)            
             self.blit_text(shadow_score_text, y=280, is_shadow=True)
             self.blit_text(score_text, y=280)
             self.blit_text(shadow_state_text, y=550, is_shadow=True)

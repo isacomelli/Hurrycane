@@ -1,25 +1,29 @@
 import pygame, sys
-import Constants, Score, Hurrycane, SceneManager, Player, Ranking, Menu, RankingMenu, CharacterMenu, StreetOne, Market, StreetTwo, WinnerScreen
- # SceneManager 02/11
+import Constants, Score, Hurrycane, SceneManager, Player, Ranking, Menu, RankingMenu, ControlsScreen, CharacterMenu, StreetOne, Market, StreetTwo, WinnerScreen, DefeatScreen
 
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+        self.sceneManager = SceneManager.SceneManager('menu')
         self.score = Score.Score()
+        self.sound_on = True
+        # Atributos definidos depois
         self.hurrycane = None
         self.clock = None
         self.player = None
-        self.sceneManager = SceneManager.SceneManager('menu')
 
         self.states = {
-            'menu': Menu.Menu(self.sceneManager),
-            'rankingMenu': RankingMenu.RankingMenu(self.sceneManager),
-            'characterMenu': CharacterMenu.CharacterMenu(self.sceneManager), 
+            'menu': Menu.Menu(self),
+            'rankingMenu': RankingMenu.RankingMenu(self), 
+            'controlsScreen': ControlsScreen.ControlsScreen(self), 
+            'characterMenu': CharacterMenu.CharacterMenu(self),
+            # Atributos definidos depois 
             'streetOne': None,
             'market': None, 
             'streetTwo': None,
-            'winnerScreen': None
+            'winnerScreen': None,
+            'defeatScreen': None
         }
 
         self.items = {
@@ -36,28 +40,28 @@ class Game:
                 'type': 'good',
                 'speed': 0,
                 'score': Constants.SMALL_ITEM_SCORE,
-                'size': (48, 18) # / 8
+                'size': (48, 18)
             },
             'water': {
                 'name': 'water',
                 'type': 'good',
                 'speed': 0,
                 'score': Constants.BIG_ITEM_SCORE,
-                'size': (30, 80) #proporcao = 3
+                'size': (30, 80)
             },
             'food': {
                 'name': 'food',
                 'type': 'good',
                 'speed': 0,
                 'score': Constants.BIG_ITEM_SCORE,
-                'size': (40, 72) # proporcao = 1.80
+                'size': (40, 72)
             },
             'med_kit': {
                 'name': 'med_kit',
                 'type': 'good',
                 'speed': 0,
                 'score': Constants.BIG_ITEM_SCORE,
-                'size': (54, 58) # 6.5
+                'size': (54, 58)
             },
 
             ##### BAD ITEMS
@@ -66,7 +70,7 @@ class Game:
                 'type': 'bad',
                 'speed': 0,
                 'score': -Constants.BIG_ITEM_SCORE,
-                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT) #proporcao = 2.20
+                'size': (Constants.CAR_WIDTH, Constants.CAR_HEIGHT)
             },
             'purple_car': {
                 'name': 'purple_car',
@@ -101,28 +105,28 @@ class Game:
                 'type': 'bad',
                 'speed': 0,
                 'score': -Constants.BIG_ITEM_SCORE,
-                'size': (95, 73)
+                'size': (109, 105)
             },
             'alcool': {
                 'name': 'alcool',
                 'type': 'bad',
                 'speed': 0,
                 'score': -Constants.SMALL_ITEM_SCORE,
-                'size': (20, 80) #3
+                'size': (20, 80)
             },
             'videogame': {
                 'name': 'videogame',
                 'type': 'bad',
                 'speed': 0,
                 'score': -Constants.SMALL_ITEM_SCORE,
-                'size': (30, 48) #1.54
+                'size': (30, 48)
             },
             'cigarette': {
                 'name': 'cigarette',
                 'type': 'bad',
                 'speed': 0,
                 'score': -Constants.SMALL_ITEM_SCORE,
-                'size': (30, 50) #1.64
+                'size': (30, 50)
             },
             'city_hole': {
                 'name': 'city_hole',
@@ -151,13 +155,15 @@ class Game:
 
             if self.sceneManager.get_previous_state() == 'characterMenu':
                 self.player = Player.Player(self, self.states['characterMenu'].get_character())
-                self.states['streetOne'] = StreetOne.StreetOne(self, self.sceneManager)
-                self.states['market'] = Market.Market(self, self.sceneManager)
-                self.states['streetTwo'] = StreetTwo.StreetTwo(self, self.sceneManager)
+                self.states['streetOne'] = StreetOne.StreetOne(self)
+                self.states['market'] = Market.Market(self)
+                self.states['streetTwo'] = StreetTwo.StreetTwo(self)
                 self.hurrycane = Hurrycane.Hurrycane()
-
-            if self.sceneManager.get_previous_state() == 'streetTwo':
-                self.states['winnerScreen'] = WinnerScreen.WinnerScreen(self.sceneManager, self.states['characterMenu'].get_character(), self.score.get_score())
 
             if self.sceneManager.get_state() == 'menu':
                 self.score = Score.Score()
+            elif self.sceneManager.get_state() == 'winnerScreen':
+                self.states['winnerScreen'] = WinnerScreen.WinnerScreen(self)
+            elif self.sceneManager.get_state() == 'defeatScreen':
+                self.states['defeatScreen'] = DefeatScreen.DefeatScreen(self)
+

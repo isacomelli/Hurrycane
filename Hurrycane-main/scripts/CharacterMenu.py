@@ -3,9 +3,9 @@ from pygame.locals import *
 import Constants
 
 class CharacterMenu:
-    def __init__(self, sceneManager):
-        pygame.font.init() 
-        self.sceneManager = sceneManager
+    def __init__(self, game):
+        self.game = game
+        self.sceneManager = game.sceneManager
         self.screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
         self.font = f"{os.path.abspath('.')}\\{Constants.GAME_FONT}"
         self.character = None
@@ -14,10 +14,7 @@ class CharacterMenu:
         self.selected = 0
         self.select_sound = pygame.mixer.Sound(Constants.MENU_SELECT_SOUND)
         self.click_sound = pygame.mixer.Sound(Constants.MENU_CLICK_SOUND)
-        self.music = pygame.mixer.Sound(Constants.MENU_MUSIC)
-        # self.run()
 
-    # Text Renderer
     def text_format(self, message, text_color, text_size=30):
         new_font = pygame.font.Font(self.font, text_size)
         text = new_font.render(message, 0, text_color)
@@ -42,23 +39,26 @@ class CharacterMenu:
         return self.character
 
     def update_screen(self):
-        self.select_sound.play()
-        self.screen.fill(Constants.LIGHT_GRAY)
+        if self.game.sound_on:
+            self.select_sound.play()
+        self.screen.fill(Constants.DARK_BLUE)
         if self.selected == 0:
             pygame.draw.rect(self.screen, Constants.WHITE, (80, 180, 130, 220), 4)
         else:
             pygame.draw.rect(self.screen, Constants.WHITE, (280, 180, 130, 220), 4)
 
-        #Mostra personagens + disposicao
         self.screen.blit(self.ariel_image, (100, 200))
         self.screen.blit(self.eric_image, (300, 200))
 
-        #textos
-        select_text, shadow_select_text = self.text_format('CHOOSE YOUR CHARACTER', Constants.YELLOW, text_size=28)
-        ariel_text, shadow_ariel_text = self.text_format('Ariel', Constants.WHITE, text_size=25)
-        eric_text, shadow_eric_text = self.text_format('Eric', Constants.WHITE, text_size=25)
+        if self.selected == 0:
+            text_colors = [Constants.WHITE, Constants.BLUE]
+        else:
+            text_colors = [Constants.BLUE, Constants.WHITE]
 
-        #exibe textos
+        select_text, shadow_select_text = self.text_format('CHOOSE YOUR CHARACTER', Constants.LIGHT_BLUE, text_size=28)
+        ariel_text, shadow_ariel_text = self.text_format('Ariel', text_colors[0], text_size=25)
+        eric_text, shadow_eric_text = self.text_format('Eric', text_colors[1], text_size=25)
+
         self.blit_text(shadow_select_text, y=100, is_shadow=True)
         self.blit_text(select_text, y=100)
         self.blit_text(shadow_ariel_text, x=110, y=350, is_shadow=True)
@@ -84,7 +84,8 @@ class CharacterMenu:
                         self.selected = 1 - self.selected
                         self.update_screen()
                     if event.key == pygame.K_SPACE:
-                        self.click_sound.play()
+                        if self.game.sound_on:
+                            self.click_sound.play()
                         if self.selected == 0:
                             self.set_character('ariel')
                             self.sceneManager.set_state('streetOne')
@@ -96,5 +97,3 @@ class CharacterMenu:
 
             pygame.display.update()
             pygame.display.set_caption(Constants.GAME_NAME)
-
-        self.music.stop()

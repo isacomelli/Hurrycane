@@ -5,7 +5,6 @@ class Ranking:
         self.txt = f"{os.path.abspath('.')}\\Ranking.txt"
         self.ranking = self.read_ranking()
 
-    # Function to read the file and create a list of tuples (name, score)
     def read_ranking(self):
         ranking = []
         with open(self.txt, 'r') as file:

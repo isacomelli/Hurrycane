@@ -15,7 +15,7 @@ class Item:
         self.half_width = self.rect.width // 2
         self.min_x = max(Constants.PLAYER_LANE_MIN_X + self.half_width - 3, Constants.PLAYER_LANE_MIN_X)
         self.max_x = min(Constants.PLAYER_LANE_MAX_X + self.rect.width + 3, Constants.PLAYER_LANE_MAX_X)
-        self.rect.center = self.set_rect_center(x)  # item com maior tamanho
+        self.rect.center = self.set_rect_center(x)
 
     def set_rect_center(self, x):
         if x:

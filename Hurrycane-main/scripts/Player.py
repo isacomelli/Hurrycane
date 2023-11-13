@@ -2,21 +2,24 @@ import pygame
 import Constants
 
 class Player:
-    def __init__(self, game, player_name):
+    def __init__(self, game, name):
         self.game = game
-        self.images = [pygame.image.load(f'img\\{player_name}_{x}.png') for x in range(1, 13)]
+        self.name = name
+        self.images = [pygame.image.load(f'img\\{name}_{x}.png') for x in range(1, 13)]
         self.images += self.images[-2::-1][:-1]
         self.current_image = 0
         self.image = self.images[self.current_image]
         self.image = pygame.transform.scale(self.image, (70, 106))
         self.rect = self.image.get_rect()
         self.rect.center = (Constants.SCREEN_WIDTH // 2, Constants.SCREEN_HEIGHT - 150)
-        self.speed = (8 if player_name == 'ariel' else 4)
-        self.jump_height = (10 if player_name == 'ariel' else 7) 
+        self.speed = (8 if name == 'ariel' else 4)
+        self.jump_height = (11 if name == 'ariel' else 8) 
         self.jump_sound = pygame.mixer.Sound(Constants.JUMP_SOUND)
         self.is_jumping = False
         self.jump_sound.set_volume(0.10)
         self.good_streak = 0
+        self.lives = 3
+
 
     def move(self, keys): 
         if keys[pygame.K_LEFT]:
@@ -31,7 +34,8 @@ class Player:
 
         if not self.is_jumping:
             if keys[pygame.K_SPACE]:
-                self.jump_sound.play()
+                if self.game.sound_on:
+                    self.jump_sound.play()
                 self.is_jumping = True
                 self.jump_pixels = self.jump_height
 

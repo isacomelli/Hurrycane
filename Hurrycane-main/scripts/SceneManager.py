@@ -12,5 +12,3 @@ class SceneManager:
 
     def get_previous_state(self):
         return self.previous_state
-
-    

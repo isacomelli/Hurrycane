@@ -2,9 +2,9 @@ import pygame, sys, random
 import Constants, Item
 
 class Level:
-    def __init__(self, game, sceneManager):
+    def __init__(self, game):
         self.game = game
-        self.sceneManager = sceneManager
+        self.sceneManager = game.sceneManager
         pygame.display.set_caption(Constants.GAME_NAME)
         self.player = game.player
         self.clock = pygame.time.Clock()
@@ -27,6 +27,14 @@ class Level:
     def run(self):
         pass
 
+    def update_player_lives_display(self):
+        heart_image = pygame.image.load(f'img\\heart_{self.player.lives}.png')
+        heart_image = pygame.transform.scale(heart_image, (100, 30))
+        heart_rect = heart_image.get_rect()
+        heart_rect.topright = (Constants.SCREEN_WIDTH - 10, 8)
+
+        self.game.screen.blit(heart_image, heart_rect)
+
     def default_setups(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,43 +46,23 @@ class Level:
         self.game.screen.blit(self.background, (0, self.background_y))
         self.game.screen.blit(self.background, (0, self.background_y - Constants.SCREEN_HEIGHT))
 
-        
         if self.background_y >= Constants.SCREEN_HEIGHT:
             self.background_y = 0
 
-        # Movimento da sprite dos itens
-        # if self.create_item:
-        #     self.item = Item.Item(self.items[random.choice(list(self.items.keys()))])
-        #     self.create_item = False
-
-        # self.item.move()
-        # self.item.blit(self.game.screen)
-
+        # Atualizando a imagem dos itens
         self.run_IA()
         self.move_items()
 
-        # Movimento da sprite do jogador
+        # Atualizando a imagem do jogador
         keys = pygame.key.get_pressed()
         self.player.move(keys)
         self.player.blit(self.game.screen)
-
-        # player_collide = (self.player.rect.x, self.player.rect.y + self.player.rect.height - 10)
-        # player_collide_rect = pygame.Rect(player_collide, (self.player.rect.width, 10))
-
-        # if player_collide_rect.colliderect(self.item.rect) and not self.player.is_jumping:
-        #     self.game.score.update_score(self.item.score)
-        #     if self.item.type == 'good':
-        #         self.good_item_sound.play()
-        #     else:
-        #         self.bad_item_sound.play() 
-        #     self.create_item = True
-
-        # if self.item.rect.y >= Constants.SCREEN_HEIGHT:
-        #     self.create_item = True
-            
+        
+        # Atualizando a imagem do furacão
         self.game.hurrycane.move()
         self.game.hurrycane.blit(self.game.screen)
 
+        # Atualizando a imagem da chuva
         if self.sceneManager.get_state() == 'streetTwo':
             self.rain_x += self.level_speed
             self.rain_y += self.level_speed * 1.25
@@ -86,18 +74,22 @@ class Level:
             if self.rain_x >= Constants.SCREEN_WIDTH / 10:
                 self.rain_x = -100
 
-        #pontuacao
+        # Pontuação
         self.game.score.regular_score()
         score_render, shadow_score_render = self.game.score.get_score_render()
         self.game.screen.blit(shadow_score_render, (7, 7))
         self.game.screen.blit(score_render, (10, 10))
 
+        # Atualizando a imagem das vidas
+        self.update_player_lives_display()
+
         pygame.display.update()
         self.time += self.clock.tick(Constants.FPS)
         # print(f'{self.player.good_streak=}')
         # print(f'{self.generate_min_range=}')
+        # print(f'{self.player.lives=}')
 
-    ##### IA #####
+    ##### IA
     def run_IA(self):
         if self.player.good_streak >= 9:
             self.generate_min_range = 15
@@ -128,25 +120,34 @@ class Level:
                 item_x = self.player.rect.x
 
             items_filtered = {id: item for id, item in self.items.items() if item['type'] == generate_item_type}
-            self.item_list.append(Item.Item(items_filtered[random.choice(list(items_filtered.keys()))], item_x))
+            random_item = random.choice(list(items_filtered.keys()))
+            if 'hole' in random_item:
+                self.item_list.insert(0, Item.Item(items_filtered[random_item],item_x))
+            else:
+                self.item_list.append(Item.Item(items_filtered[random_item],item_x))
 
     def move_items(self):
-        for index, item in enumerate(self.item_list):
+        player_collide = (self.player.rect.x, self.player.rect.y + self.player.rect.height - 40)
+        player_collide_rect = pygame.Rect(player_collide, (self.player.rect.width, 40))
+
+        for item in self.item_list:
             item.move()
             item.blit(self.game.screen)
 
-            player_collide = (self.player.rect.x, self.player.rect.y + self.player.rect.height - 50)
-            player_collide_rect = pygame.Rect(player_collide, (self.player.rect.width, 50))
-
+        for item in self.item_list:
             if player_collide_rect.colliderect(item.rect) and not self.player.is_jumping:
-                self.game.score.update_score(item.score)
+                self.game.score.update_score(item.score * self.multiplier + self.player.good_streak)
                 if item.type == 'good':
                     self.player.good_streak += 1
-                    self.good_item_sound.play()
+                    if self.game.sound_on:
+                        self.good_item_sound.play()
                 else:
+                    self.player.lives -= 1
                     self.player.good_streak = 0
-                    self.bad_item_sound.play()
-                self.item_list.pop(index)
+                    if self.game.sound_on:
+                        self.bad_item_sound.play()
+
+                self.item_list.remove(item)
 
             if item.rect.y >= Constants.SCREEN_HEIGHT:
-                self.item_list.pop(index)
+                self.item_list.remove(item)
